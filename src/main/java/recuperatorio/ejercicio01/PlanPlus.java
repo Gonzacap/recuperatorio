@@ -14,4 +14,19 @@ public class PlanPlus extends Afiliado{
 		this.cuitEmpleador = cuit;
 	}
 	
+	//------
+	
+	@Override
+	public double facturar() {
+		
+		Double total = 0.0;
+		
+		for(Prestacion p: super.prestaciones) {
+			
+			total += p.getCosto(this.tipo);
+		}
+		
+		return total;
+	}
+	
 }

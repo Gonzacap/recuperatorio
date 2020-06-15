@@ -17,5 +17,18 @@ public class PlanJoven extends Afiliado {
 		this.universidad = uni;
 		this.carrera = carrera;
 	}
+	
+	@Override
+	public double facturar() {
+		
+		Double total = 0.0;
+		
+		for(Prestacion p: super.prestaciones) {
+			
+			total += p.getCosto(this.tipo);
+		}
+		
+		return total;
+	}
 
 }

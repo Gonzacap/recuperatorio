@@ -6,13 +6,13 @@ public class Afiliado {
 	
 	public enum Tipo {PLUS, JOVEN};
 	
-	private String nombre;
-	private String email; 
-	private Long dni; 
-	private String fechaNac;//?
-	private Tipo tipo;
-	private Double porcentaje;
-	private List<Prestacion> prestaciones;
+	protected String nombre;
+	protected String email; 
+	protected Long dni; 
+	protected String fechaNac;//?
+	protected Tipo tipo;
+	protected Double porcentaje;
+	protected List<Prestacion> prestaciones;
 	
 	//CONSTRUCTOR
 	
@@ -24,14 +24,22 @@ public class Afiliado {
 		this.porcentaje = p;
 	}
 	
+	//--------------
+	
 	/* Implementar el método registrar prestación a un afiliado, donde se agregue a la lista de prestaciones recibidas una prestación*/
-	
-	
-	public double facturar() {
+
+	public double facturar(){
 		return 0.0;
 	}
+	
+	//getters y setters
 	
 	public Tipo getTipo(){
 		return this.tipo;
 	}
+	
+	public void registrarPrestacion(Prestacion p) {
+		this.prestaciones.add(p);
+	}
+	
 }
