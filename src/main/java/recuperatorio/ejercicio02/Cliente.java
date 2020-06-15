@@ -27,10 +27,23 @@ public class Cliente {
 		this.pedidos.add(new Pedido(nroPedido));
 	}
 	
-	public void agregarProducto(Integer nroPedido, Integer idProducto,Integer cantidad) {
+	public void agregarProducto(Integer nroPedido, Integer idProducto,Integer cantidad) throws BusquedaProductoException, StockINsuficienteException{
 
+		try {
 		Producto p = Database.buscarProducto(idProducto);
-		// verificar si el stock existente alcanza para agregarlo al pedido				
+		// verificar si el stock existente alcanza para agregarlo al pedido
+		
+		} catch (BusquedaProductoException e){
+			e = new BusquedaProductoException("Error al buscar producto");
+			System.out.println(e.getMessage());
+		}
+		
+		if(p.getStock()>cantidad) {
+			
+		}
+		else {
+			throw new StockINsuficienteException("Error stock insuficiente");
+		}
 
 		// verificar si el cliente cumple la condicion pedida para agregar el producto
 		Pedido pedido = this.buscarPorNro(nroPedido);
