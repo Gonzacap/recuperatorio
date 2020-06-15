@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
+	
+	//CantidadProductosInsuficienteException
 
 	private Integer id;
 	private List<Pedido> pedidos;
@@ -29,25 +31,26 @@ public class Cliente {
 	
 	public void agregarProducto(Integer nroPedido, Integer idProducto,Integer cantidad) throws BusquedaProductoException, StockINsuficienteException{
 
-		try {
+		//verificar si el stock existente alcanza para agregarlo al pedido
 		Producto p = Database.buscarProducto(idProducto);
-		// verificar si el stock existente alcanza para agregarlo al pedido
 		
-		} catch (BusquedaProductoException e){
-			e = new BusquedaProductoException("Error al buscar producto");
-			System.out.println(e.getMessage());
-		}
-		
-		if(p.getStock()>cantidad) {
+		if(p!=null) {
+			if(p.getStock()>cantidad) {
+				
+				//if()
+				
+			}
+			else {
+				throw new StockINsuficienteException("Error stock insuficiente");
+			}
 			
+			// verificar si el cliente cumple la condicion pedida para agregar el producto
+			Pedido pedido = this.buscarPorNro(nroPedido);
+			pedido.addDetalle(p, cantidad);
 		}
 		else {
-			throw new StockINsuficienteException("Error stock insuficiente");
+			throw new BusquedaProductoException("Error producto no encontrado");
 		}
-
-		// verificar si el cliente cumple la condicion pedida para agregar el producto
-		Pedido pedido = this.buscarPorNro(nroPedido);
-		pedido.addDetalle(p, cantidad);
 	}
 	
 	public Pedido buscarPorNro(Integer nroPedido) {
@@ -57,9 +60,13 @@ public class Cliente {
 		return null;
 	}
 	
-	public List<Producto> productosMontoMayor(Double monto)
+	public List<Producto> productosMontoMayor(Double monto){
+		
+	}
 	
-	public Double compraPromedio()
+	public Double compraPromedio() {
+		
+	}
 
 	
 }
