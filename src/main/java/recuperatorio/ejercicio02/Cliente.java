@@ -9,6 +9,7 @@ public class Cliente {
 
 	private Integer id;
 	private List<Pedido> pedidos;
+	private Integer maximoPorProducto;
 	
 	public Integer getId() {
 		return id;
@@ -24,12 +25,20 @@ public class Cliente {
 		this.pedidos = pedidos;
 	}
 	
+	
+	public void setMaximoPorProducto(Integer max) {
+		this.maximoPorProducto = max;
+	}
+	
+	
 	public void crearPedido(Integer nroPedido) {
 		if(this.pedidos==null)this.pedidos = new ArrayList<Pedido>();
 		this.pedidos.add(new Pedido(nroPedido));
 	}
 	
-	public void agregarProducto(Integer nroPedido, Integer idProducto,Integer cantidad) throws BusquedaProductoException, StockINsuficienteException{
+	//-----------------
+	
+	public void agregarProducto(Integer nroPedido, Integer idProducto,Integer cantidad) throws BusquedaProductoException, StockINsuficienteException, DatabaseException, CantidadProductosInsuficienteException{
 
 		//verificar si el stock existente alcanza para agregarlo al pedido
 		Producto p = Database.buscarProducto(idProducto);
@@ -37,21 +46,30 @@ public class Cliente {
 		if(p!=null) {
 			if(p.getStock()>cantidad) {
 				
-				//if()
+				if((this.cantDeUnProd(p)+cantidad)<this.maximoPorProducto) {
+					
+					// verificar si el cliente cumple la condicion pedida para agregar el producto
+					Pedido pedido = this.buscarPorNro(nroPedido);
+					pedido.addDetalle(p, cantidad);
+					
+				}
+				else {
+					throw new CantidadProductosInsuficienteException("Error la compra supera su capacidad maxima por producto");
+				}
 				
 			}
 			else {
 				throw new StockINsuficienteException("Error stock insuficiente");
 			}
 			
-			// verificar si el cliente cumple la condicion pedida para agregar el producto
-			Pedido pedido = this.buscarPorNro(nroPedido);
-			pedido.addDetalle(p, cantidad);
 		}
 		else {
 			throw new BusquedaProductoException("Error producto no encontrado");
 		}
 	}
+	
+	
+	//--------------
 	
 	public Pedido buscarPorNro(Integer nroPedido) {
 		for(Pedido p : this.pedidos) {
@@ -66,6 +84,25 @@ public class Cliente {
 	
 	public Double compraPromedio() {
 		
+	}
+	
+	//-----------
+	
+	public Integer cantDeUnProd(Producto prodBuscado) {
+		
+		Integer cant = 0;
+		
+		for(Pedido p:  this.pedidos) {
+			
+			for(PedidoDetalle pd: p.getDetalles()){
+				
+				if(pd.getProducto() == prodBuscado) {
+					cant += pd.getCantidad();
+				}
+			}
+		}
+		
+		return cant;
 	}
 
 	
